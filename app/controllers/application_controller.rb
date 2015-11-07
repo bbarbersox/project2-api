@@ -17,13 +17,13 @@ class ApplicationController < ActionController::API
   # Controllers can use this to authorize actions
   attr_reader :current_user
 
-  # Require SSL for deployed applications
+  # Require SSL for deployed applications - if not in development environment must use ssl
   force_ssl if: :ssl_configured?
   def ssl_configured?
-    !Rails.env.development?
+    !Rails.env.development? # ssl must be there in non-development or server will not run
   end
 
-  # Use enhanced JSON serialization
+  # Use enhanced JSON serialization - makes it easier to generate JSPN
   include ActionController::Serialization
 
   # return 404 for failed search by id
@@ -32,7 +32,7 @@ class ApplicationController < ActionController::API
     render json: { message: 'Not Found' }, status: :not_found
   end
 
-  # Restrict visibility of these methods
+  # Restrict visibility of these methods - call only be called from things in inheritence chain
   private :authenticate, :current_user, :record_not_found
   private :ssl_configured?, :api_request_settings
 end

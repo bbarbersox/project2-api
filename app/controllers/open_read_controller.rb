@@ -1,4 +1,4 @@
-# Allow READ_ACTIONS access without authentication
+# Allow READ_ACTIONS access without authentication -- these actions do not change anything
 class OpenReadController < ApplicationController
   # Allow unauthenticated access to these actions
   READ_ACTIONS = [:index, :show]
