@@ -485,6 +485,24 @@ $(function() {
     var books = $('#result').val(JSON.stringify(data, null, 4));
   };
 
+  $('.checkbox').on('click', function(e){
+    console.log('click on register button is working');
+    window.location = "register.html";
+    // var pwconfirm = document.getElementsByClassName("confirm");
+    // pwconfirm.style.display = 'block';
+
+    // pwconfirm.style.display = "";
+    console.log(pwconfirm);
+      });
+
+  // var unhide = function unhide (it, box) {
+  //     console.log('getting to unhide function');
+  //     debugger;
+  //     var check = (box.checked) ? "block" : "none";
+  //     document.getElementById(it).style.display = check;
+  //   };
+
+
   $('.register').on('submit', function(e) {
     var credentials = wrap('credentials', form2object(this));
     tttapi.register(credentials, callback);
@@ -493,7 +511,6 @@ $(function() {
 
   $('.login').on('submit', function(e) {
     var credentials = wrap('credentials', form2object(this));
-    debugger;
     var cb = function cb(error, data) {
       if (error) {
         callback(error);
