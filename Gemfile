@@ -1,5 +1,6 @@
 # Look for ruby gems here
 source 'https://rubygems.org'
+ruby '2.2.0'
 
 # Set required ruby version (for heroku)
 ruby '2.2.3'
@@ -25,4 +26,9 @@ group :development do
   # Use pry over irb for rails console
   gem 'pry-rails'
   gem 'byebug'
+end
+
+group :production do
+     gem 'rails_12factor'
+     gem 'puma'
 end
