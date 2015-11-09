@@ -366,6 +366,7 @@ var tttapi = {
       data: JSON.stringify(credentials),
       dataType: 'json',
     }, callback);
+    window.location = "index.html";
   },
 
   login: function login(credentials, callback) {
