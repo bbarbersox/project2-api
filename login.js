@@ -1,14 +1,13 @@
 "use strict";
 
-//
-// Game credentials logic
-//
-
 // Global variable definitions
 
-var registerURL = 'http://ttt.wdibos.com/users';
-var loginURL = 'http://ttt.wdibos.com/login';
-var gameURL = 'http://ttt.wdibos.com/games'; // will be used for create & list all games
+// var registerURL = 'http://ttt.wdibos.com/users';
+var registerURL = 'http://localhost:3000/register';
+// var loginURL = 'http://ttt.wdibos.com/login';
+var loginURL = 'http://localhost:3000/login';
+// var booksURL = 'http://ttt.wdibos.com/books';
+var booksURL = 'http://localhost:3000/books';  // will be used for create & list books
 // var showAllGamesURL = 'http://ttt.wdibos.com/games';
 var userEmail = "";
 var token = "";
@@ -17,146 +16,156 @@ var gameId = 0;
 
 
 // $('email')
-$(document).ready(function() {
+// $(document).ready(function() {
 
-// User registration login
-$('.register').on('submit', function(e) {
-    event.preventDefault();
+// // User registration login
+// $('.register').on('submit', function(e) {
+//     event.preventDefault();
 
-    dataForServer = {
-      "credentials": {
-        "email": "an@example.email",
-        "password": "an example password",
-        "password_confirmation": "an example password"
-      }
-    }
+//     dataForServer = {
+//       "credentials": {
+//         "email": "an@example.email",
+//         "password": "an example password",
+//         "password_confirmation": "an example password"
+//       }
+//     }
 
-    // build the values array
+//     // build the values array
 
-    // for each element of the form register, create a new hash
-    // which contains all the input values from the register form
-    $.each($('.register').serializeArray(), function(i, field) {
-       values[field.name] = field.value;
-     });
-    console.log(values);
+//     // for each element of the form register, create a new hash
+//     // which contains all the input values from the register form
+//     $.each($('.register').serializeArray(), function(i, field) {
+//        values[field.name] = field.value;
+//      });
+//     console.log(values);
 
-    var userEmail = values.email;
-    console.log(userEmail);
+//     var userEmail = values.email;
+//     console.log(userEmail);
 
-      $.ajax({
-      method: 'POST',
-      url: registerURL,
-      contentType: 'application/json; charset=utf-8',
-      //data: JSON.stringify(credentials),
-      data: JSON.stringify(values),
-      dataType: 'json',
-      });
-      // register post processing logic goes here
-      delete values['password_confirmation'];
-  });
+//       $.ajax({
+//       method: 'POST',
+//       url: registerURL,
+//       contentType: 'application/json; charset=utf-8',
+//       //data: JSON.stringify(credentials),
+//       data: JSON.stringify(values),
+//       dataType: 'json',
+//       });
+//       // register post processing logic goes here
+//       delete values['password_confirmation'];
+//   });
 
-  $('.login').on('submit', function(e) {
-    event.preventDefault();
+//   $('.login').on('submit', function(e) {
+//     event.preventDefault();
 
-    var dataForServer = {
-      "credentials": {
-        "email": "an@example.email",
-        "password": "an example password"
-      }
-    };
+//     var dataForServer = {
+//       "credentials": {
+//         "email": "an@example.email",
+//         "password": "an example password"
+//       }
+//     };
 
-    // build the data object to be sent to the server
+//     // build the data object to be sent to the server
 
-    // for each element of the form register, create a new hash
-    // which contains all the input values from the register form
-    $.each($('.login').serializeArray(), function(i, field) {
-       dataForServer.credentials[field.name] = field.value;
-     });
+//     // for each element of the form register, create a new hash
+//     // which contains all the input values from the register form
+//     $.each($('.login').serializeArray(), function(i, field) {
+//        dataForServer.credentials[field.name] = field.value;
+//      });
 
-    // Save the players email for later use
-    var userEmail = dataForServer.credentials.email;
+//     // Save the players email for later use
+//     var userEmail = dataForServer.credentials.email;
 
-    var ajaxReq = $.ajax({
-      method: 'POST',
-      url: loginURL,
-      contentType: 'application/json; charset=utf-8',
-      //data: JSON.stringify(credentials),
-      data: JSON.stringify(dataForServer),
-      dataType: 'json',
-    });
+//     var ajaxReq = $.ajax({
+//       method: 'POST',
+//       url: loginURL,
+//       contentType: 'application/json; charset=utf-8',
+//       //data: JSON.stringify(credentials),
+//       data: JSON.stringify(dataForServer),
+//       dataType: 'json',
+//     });
 
-    ajaxReq.done(function(remoteData, error){
-      console.log("remoteData = ", remoteData);
-      var insert = "You have successfully logged in";
-      $('#statustext').text(insert);
+//     ajaxReq.done(function(remoteData, error){
+//       console.log("remoteData = ", remoteData);
+//       var insert = "You have successfully logged in";
+//       $('#statustext').text(insert);
 
-      // Save the users token and ID for later use
-      token = remoteData.user.token;
-      userId = remoteData.user.id;
-      $('.token').val(remoteData.user.token); // sets all forms a token value
-      console.log(token, userId);
-    });
+//       // Save the users token and ID for later use
+//       token = remoteData.user.token;
+//       userId = remoteData.user.id;
+//       $('.token').val(remoteData.user.token); // sets all forms a token value
+//       console.log(token, userId);
+//     });
 
-    ajaxReq.fail(function(){
-      alert("Failed!!!!");
-    });
+//     ajaxReq.fail(function(){
+//       alert("Failed!!!!");
+//     });
 
-  });
+//   });
 
-// Create a new game game logic is below
+// // Create a new game game logic is below
 
-$('#create-game').on('submit', function(e){
-  event.preventDefault();
-  console.log(gameURL, token);
-  var createGame = $.ajax({
-      method: 'POST',
-      url: gameURL,
-      headers: {
-        Authorization: 'Token token=' + token
-      },
-      dataType: 'json'
-  });
-  createGame.done(function(remoteData, error){
-      debugger;
-      console.log("remoteData = ", remoteData);
-      gameId = remoteData.game.id;
-      window.location = "game.html",
-      console.log("gameId = ", gameId);
-  });
+// $('#create-game').on('submit', function(e){
+//   event.preventDefault();
+//   console.log(gameURL, token);
+//   var createGame = $.ajax({
+//       method: 'POST',
+//       url: gameURL,
+//       headers: {
+//         Authorization: 'Token token=' + token
+//       },
+//       dataType: 'json'
+//   });
+//   createGame.done(function(remoteData, error){
+//       debugger;
+//       console.log("remoteData = ", remoteData);
+//       gameId = remoteData.game.id;
+//       window.location = "game.html",
+//       console.log("gameId = ", gameId);
+//   });
 
-  createGame.fail(function(){
-    debugger;
-    console.log("Creating a game has failed");
-  });
-});
+//   createGame.fail(function(){
+//     debugger;
+//     console.log("Creating a game has failed");
+//   });
+// });
+// });
 
-  // Show all the games associated with this user id
-$('#list-games').on('submit', function(e){
- debugger;
-  console.log("got to list games after button click");
-  console.log(token);
+//   // $('#listBooks').on('submit', function(e) {
+//   //   debugger;
+//   //   console.log('got to listBooks');
+//   //   var token = $(this).children('[name="token"]').val();
+//   //   console.log(token);
+//   //   e.preventDefault();
+//   //   tttapi.listBooks(token, callback);
+//   // });
 
-  var listAllGames = $.ajax({
-    method: 'GET',
-    url: gameURL,
-    headers:{
-        Authorization: 'Token token=' + token
-      },
-      dataType: 'json'
-  });
 
-  listAllGames.done(function(remoteData, error){
-      debugger;
-      console.log("remoteData = ", remoteData);
-      // gameId = remoteData.game.id;
-  });
+//   // Show all the books
+// $('#listBooks').on('submit', function(e){
+//  debugger;
+//   console.log("got to list books after button click");
+//   console.log(token);
 
-  listAllGames.fail(function(){
-    debugger;
-    console.log("Listing the games has failed");
-  });
-});
-});
+//   var listBooks = $.ajax({
+//     method: 'GET',
+//     url: booksURL,
+//     // headers:{
+//     //     Authorization: 'Token token=' + token
+//     //   },
+//       dataType: 'json'
+//   });
+
+//   listBooks.done(function(remoteData, error){
+//       debugger;
+//       console.log("remoteData = ", remoteData);
+//       // gameId = remoteData.game.id;
+//   });
+
+//   listBooks.fail(function(){
+//     debugger;
+//     console.log("Listing the books has failed");
+//   });
+// });
 
 
 
@@ -333,241 +342,263 @@ $('#list-games').on('submit', function(e){
 
 // // });
 
-// var tttapi = {
-//   gameWatcher: null,
+var tttapi = {
+  gameWatcher: null,
+  ttt: 'http://localhost:3000',
 //   ttt: 'http://ttt.wdibos.com',
 
-//   ajax: function(config, cb) {
-//     $.ajax(config).done(function(data, textStatus, jqxhr) {
-//       cb(null, data);
-//     }).fail(function(jqxhr, status, error) {
-//       cb({jqxher: jqxhr, status: status, error: error});
-//     });
-//   },
+  ajax: function(config, cb) {
+    console.log('got to ajax done routine');
+    console.log(config);
+    $.ajax(config).done(function(data, textStatus, jqxhr) {
+      cb(null, data);
+    }).fail(function(jqxhr, status, error) {
+      cb({jqxher: jqxhr, status: status, error: error});
+    });
+  },
 
 
-//   register: function register(credentials, callback) {
-//     this.ajax({
-//       method: 'POST',
-//       url: this.ttt + '/users',
-//       contentType: 'application/json; charset=utf-8',
-//       data: JSON.stringify(credentials),
-//       dataType: 'json',
-//     }, callback);
-//   },
+  register: function register(credentials, callback) {
+    this.ajax({
+      method: 'POST',
+      url: this.ttt + '/register',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify(credentials),
+      dataType: 'json',
+    }, callback);
+  },
 
-//   login: function login(credentials, callback) {
-//     this.ajax({
-//       method: 'POST',
-//       url: this.ttt + '/login',
-//       contentType: 'application/json; charset=utf-8',
-//       data: JSON.stringify(credentials),
-//       dataType: 'json',
-//     }, callback);
-//   },
+  login: function login(credentials, callback) {
+    debugger;
+    this.ajax({
+      method: 'POST',
+      url: this.ttt + '/login',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify(credentials),
+      dataType: 'json',
+    }, callback);
+  },
 
-//   //Authenticated api actions
-//   listGames: function (token, callback) {
-//     this.ajax({
-//       method: 'GET',
-//       url: this.ttt + '/games',
-//       headers: {
-//         Authorization: 'Token token=' + token
-//       },
-//       dataType: 'json'
-//     }, callback);
-//   },
+  // Authenticated api actions
+  // listGames: function (token, callback) {
+  //   this.ajax({
+  //     method: 'GET',
+  //     url: this.ttt + '/books',
+  //     headers: {
+  //       Authorization: 'Token token=' + token
+  //     },
+  //     dataType: 'json'
+  //   }, callback);
+  // },
 
-//   createGame: function (token, callback) {
-//     this.ajax({
-//       method: 'POST',
-//       url: this.ttt + '/games',
-//       headers: {
-//         Authorization: 'Token token=' + token
-//       },
-//       dataType: 'json'
-//     }, callback);
-//   },
+listBooks: function (token, callback) {
+    this.ajax({
+      method: 'GET',
+      url: this.ttt + '/books',
+      headers: {
+        Authorization: 'Token token=' + token
+      },
+      dataType: 'json'
+    }, callback);
+  },
 
-//   showGame: function (id, token, callback) {
-//     this.ajax({
-//       method: 'GET',
-//       url: this.ttt + '/games/'+id,
-//       headers: {
-//         Authorization: 'Token token=' + token
-//       },
-//       dataType: 'json'
-//     }, callback);
-//   },
+  createGame: function (token, callback) {
+    this.ajax({
+      method: 'POST',
+      url: this.ttt + '/games',
+      headers: {
+        Authorization: 'Token token=' + token
+      },
+      dataType: 'json'
+    }, callback);
+  },
 
-//   joinGame: function (id, token, callback) {
-//     this.ajax({
-//     }, callback);
-//   },
+  showGame: function (id, token, callback) {
+    this.ajax({
+      method: 'GET',
+      url: this.ttt + '/games/'+id,
+      headers: {
+        Authorization: 'Token token=' + token
+      },
+      dataType: 'json'
+    }, callback);
+  },
 
-
-//   markCell: function (id, data, token, callback) {
-//     this.ajax({
-//       method: 'PATCH',
-//       url: this.ttt + '/games/' + id,
-//       headers: {
-//         Authorization: 'Token token=' + token
-//       },
-//       contentType: 'application/json; charset=utf-8',
-//       data: JSON.stringify(data),
-//       dataType: 'json'
-//     }, callback);
-//   },
-
-//   watchGame: function (id, token) {
-//     var url = this.ttt + '/games/' + id + '/watch';
-//     var auth = {
-//       Authorization: 'Token token=' + token
-//     };
-//     this.gameWatcher = resourceWatcher(url, auth); //jshint ignore: line
-//     return this.gameWatcher;
-//   }
-// };
+  joinGame: function (id, token, callback) {
+    this.ajax({
+    }, callback);
+  },
 
 
-// //$(document).ready(...
-// $(function() {
-//   var form2object = function(form) {
-//     var data = {};
-//     $(form).children().each(function(index, element) {
-//       var type = $(this).attr('type');
-//       if ($(this).attr('name') && type !== 'submit' && type !== 'hidden') {
-//         data[$(this).attr('name')] = $(this).val();
-//       }
-//     });
-//     return data;
-//   };
+  markCell: function (id, data, token, callback) {
+    this.ajax({
+      method: 'PATCH',
+      url: this.ttt + '/games/' + id,
+      headers: {
+        Authorization: 'Token token=' + token
+      },
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify(data),
+      dataType: 'json'
+    }, callback);
+  },
 
-//   var wrap = function wrap(root, formData) {
-//     var wrapper = {};
-//     wrapper[root] = formData;
-//     return wrapper;
-//   };
-
-//   var callback = function callback(error, data) {
-//     if (error) {
-//       console.error(error);
-//       $('#result').val('status: ' + error.status + ', error: ' +error.error);
-//       return;
-//     }
-//     $('#result').val(JSON.stringify(data, null, 4));
-//   };
-
-//   $('.register').on('submit', function(e) {
-//     var credentials = wrap('credentials', form2object(this));
-//     tttapi.register(credentials, callback);
-//     e.preventDefault();
-//   });
-
-//   $('.login').on('submit', function(e) {
-//     var credentials = wrap('credentials', form2object(this));
-//     var cb = function cb(error, data) {
-//       if (error) {
-//         callback(error);
-//         return;
-//       }
-//       callback(null, data);
-//       //$('.token').val(data.user.token); // sets all forms a token value
-//       token = data.user.token;
-//     };
-//     e.preventDefault();
-//     tttapi.login(credentials, cb);
-//   });
-
-//   $('#list-games').on('submit', function(e) {
-//     var token = $(this).children('[name="token"]').val();
-//     e.preventDefault();
-//     tttapi.listGames(token, callback);
-//   });
-
-//   var createGameCB = function createGameCB(err, data) {
-//     console.log(data);
-//     if (err) {
-//       console.error(err);
-//       return;
-//     } else {
-//       gameId = data.game.id;
-//     }
-//   }
-
-//   $('#create-game').on('submit', function(e) {
-//     //var token = $(this).children('[name="token"]').val();
-//     e.preventDefault();
-//     tttapi.createGame(token, createGameCB);
-//   });
-
-//   $('#show-game').on('submit', function(e) {
-//     var token = $(this).children('[name="token"]').val();
-//     var id = $('#show-id').val();
-//     e.preventDefault();
-//     tttapi.showGame(id, token, callback);
-//   });
-
-//   $('#join-game').on('submit', function(e) {
-//     var token = $(this).children('[name="token"]').val();
-//     var id = $('#join-id').val();
-//     e.preventDefault();
-//     tttapi.joinGame(id, token, callback);
-//   });
-
-//    updateCell = function updateCell(token, gameID, game) {
-//      // var token = $(this).children('[name="token"]').val();
-//      // var id = $('#mark-id').val();
-//      alert('we got to updateCell');
-//      var data = wrap('game', wrap('cell', form2object(this)));
-//      // e.preventDefault();
-//      tttapi.markCell(id, data, token, callback);
-//    };
-
-//   // $('.square').on('click', function(e) {
-//   //    alert('we got to mark-cell function');
-//   //    // var token = $(this).children('[name="token"]').val();
-//   //    // var id = $('#mark-id').val();
-//   //    squareClick();
-//   //    var data = wrap('game', wrap('cell', form2object(this)));
-//   //    e.preventDefault();
-//   //    tttapi.markCell(id, data, token, callback);
-//   // });
+  watchGame: function (id, token) {
+    var url = this.ttt + '/games/' + id + '/watch';
+    var auth = {
+      Authorization: 'Token token=' + token
+    };
+    this.gameWatcher = resourceWatcher(url, auth); //jshint ignore: line
+    return this.gameWatcher;
+  }
+};
 
 
-//   // $('#mark-cell').on('submit', function(e) {
-//   //   var token = $(this).children('[name="token"]').val();
-//   //   var id = $('#mark-id').val();
-//   //   alert('we got to mark-cell function');
-//   //   var data = wrap('game', wrap('cell', form2object(this)));
-//   //   e.preventDefault();
-//   //   tttapi.markCell(id, data, token, callback);
-//   // });
+// $(document).ready(...
+$(document).ready(function() {
+$(function() {
+  var form2object = function(form) {
+    debugger;
+    var data = {};
+    $(form).children().each(function(index, element) {
+      var type = $(this).attr('type');
+      if ($(this).attr('name') && type !== 'submit' && type !== 'hidden') {
+        data[$(this).attr('name')] = $(this).val();
+      }
+    });
+    return data;
+  };
 
-//   $('#watch-game').on('submit', function(e){
-//     var token = $(this).children('[name="token"]').val();
-//     var id = $('#watch-id').val();
-//     e.preventDefault();
+  var wrap = function wrap(root, formData) {
+    var wrapper = {};
+    wrapper[root] = formData;
+    return wrapper;
+  };
 
-//     var gameWatcher = tttapi.watchGame(id, token);
+  var callback = function callback(error, data) {
+    if (error) {
+      console.error(error);
+      $('#result').val('status: ' + error.status + ', error: ' +error.error);
+      return;
+    }
+    debugger;
+    var books = $('#result').val(JSON.stringify(data, null, 4));
+  };
 
-//     gameWatcher.on('change', function(data){
-//       var parsedData = JSON.parse(data);
-//       if (data.timeout) { //not an error
-//         this.gameWatcher.close();
-//         return console.warn(data.timeout);
-//       }
-//       var gameData = parsedData.game;
-//       var cell = gameData.cell;
-//       $('#watch-index').val(cell.index);
-//       $('#watch-value').val(cell.value);
-//     });
-//     gameWatcher.on('error', function(e){
-//       console.error('an error has occured with the stream', e);
-//     });
-//   });
+  $('.register').on('submit', function(e) {
+    var credentials = wrap('credentials', form2object(this));
+    tttapi.register(credentials, callback);
+    e.preventDefault();
+  });
 
-// });
+  $('.login').on('submit', function(e) {
+    var credentials = wrap('credentials', form2object(this));
+    debugger;
+    var cb = function cb(error, data) {
+      if (error) {
+        callback(error);
+        return;
+      }
+      callback(null, data);
+      //$('.token').val(data.user.token); // sets all forms a token value
+      token = data.user.token;
+      console.log(token);
+    };
+    e.preventDefault();
+    tttapi.login(credentials, cb);
+  });
+
+  $('#listBooks').on('submit', function(e) {
+    console.log('got to list books function', token);
+//    var token = $(this).children('[name="token"]').val();
+    e.preventDefault();
+    tttapi.listBooks(token, callback);
+  });
+
+  var createGameCB = function createGameCB(err, data) {
+    console.log(data);
+    if (err) {
+      console.error(err);
+      return;
+    } else {
+      gameId = data.game.id;
+    }
+  };
+
+  $('#create-game').on('submit', function(e) {
+    //var token = $(this).children('[name="token"]').val();
+    e.preventDefault();
+    tttapi.createGame(token, createGameCB);
+  });
+
+  $('#show-game').on('submit', function(e) {
+    var token = $(this).children('[name="token"]').val();
+    var id = $('#show-id').val();
+    e.preventDefault();
+    tttapi.showGame(id, token, callback);
+  });
+
+  $('#join-game').on('submit', function(e) {
+    var token = $(this).children('[name="token"]').val();
+    var id = $('#join-id').val();
+    e.preventDefault();
+    tttapi.joinGame(id, token, callback);
+  });
+
+   // updateCell = function updateCell(token, gameID, game) {
+   //   // var token = $(this).children('[name="token"]').val();
+   //   // var id = $('#mark-id').val();
+   //   alert('we got to updateCell');
+   //   var data = wrap('game', wrap('cell', form2object(this)));
+   //   // e.preventDefault();
+   //   tttapi.markCell(id, data, token, callback);
+   // };
+
+  // $('.square').on('click', function(e) {
+  //    alert('we got to mark-cell function');
+  //    // var token = $(this).children('[name="token"]').val();
+  //    // var id = $('#mark-id').val();
+  //    squareClick();
+  //    var data = wrap('game', wrap('cell', form2object(this)));
+  //    e.preventDefault();
+  //    tttapi.markCell(id, data, token, callback);
+  // });
+
+
+  // $('#mark-cell').on('submit', function(e) {
+  //   var token = $(this).children('[name="token"]').val();
+  //   var id = $('#mark-id').val();
+  //   alert('we got to mark-cell function');
+  //   var data = wrap('game', wrap('cell', form2object(this)));
+  //   e.preventDefault();
+  //   tttapi.markCell(id, data, token, callback);
+  // });
+
+  $('#watch-game').on('submit', function(e){
+    var token = $(this).children('[name="token"]').val();
+    var id = $('#watch-id').val();
+    e.preventDefault();
+
+    var gameWatcher = tttapi.watchGame(id, token);
+
+    gameWatcher.on('change', function(data){
+      var parsedData = JSON.parse(data);
+      if (data.timeout) { //not an error
+        this.gameWatcher.close();
+        return console.warn(data.timeout);
+      }
+      var gameData = parsedData.game;
+      var cell = gameData.cell;
+      $('#watch-index').val(cell.index);
+      $('#watch-value').val(cell.value);
+    });
+    gameWatcher.on('error', function(e){
+      console.error('an error has occured with the stream', e);
+    });
+  });
+});
+
+});
 
 // });
 
