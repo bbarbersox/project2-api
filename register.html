@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" type="text/css" href="styles/login_style.css">
+
+  <link href="styles/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div id="main">
+  <h1>Community Activity</h1>
+  <h3>Welcome to your home's Community Activity web site.  Check out the
+  all the great activities scheduled for your home and residents.
+
+
+  To get started please register or login (if you already registered) below.
+  </h3>
+      <form class="login">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <input name="email" id="inputEmail" class="form-control" type="text" placeholder="Email address" required autofocus>
+        <input type="password" name="password" id="inputPassword" class="form-control placeholder="password">
+        <div class="checkbox">
+          <label>
+            <!--<input type="checkbox" value="remember-me"> Remember me> ORIGINAL CODE -->
+            <input type="checkbox" value="register-now"> Register now
+          </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
+
+
+      <form class="register">
+        <input name="email" type="text" placeholder="email">
+        <input name="password" type="password" placeholder="password">
+        <input name="password_confirmation" type="password" placeholder="pw confirmation">
+        <input name="register" type="submit" value="Register">
+      </form>
+      <form id="listBooks">
+      <input name="listBooks" type="submit" value="listBooks">
+      <input class="token" name="token" type="hidden">
+      </form>
+      <br>
+      <label for="result">Result</label>
+      <textarea id="result"></textarea>
+      <ul id="resultList">
+
+      </ul>
+
+     <!--  <form id="create-game">
+        <input name="create-game" type="submit" value="Create Game">
+        <input class="token" name="token" type="hidden">
+        </form> -->
+    <!-- <button name="reset" type="click" placeholder="Reset">Start a new game</button>
+    <footer>Sponsored by Crazy About Tic Tac Toe</footer> -->
+</div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="antonylogin.js" type="application/javascript" charset="utf-8"></script>
+</body>
+</html>
