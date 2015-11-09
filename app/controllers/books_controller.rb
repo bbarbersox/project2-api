@@ -44,7 +44,7 @@ class BooksController < OpenReadController
   end
 
   def set_book
-    @book = current_user.books.find(params[:id])
+    @book = current_user.books.find(params[:id]) # makes this book this users book
   end
 
   def book_params
