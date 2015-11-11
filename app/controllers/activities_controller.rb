@@ -51,6 +51,3 @@ class ActivitiesController < OpenReadController
 
   private :set_activity, :activity_params
 end
-
-
-end
