@@ -46,7 +46,7 @@ class ActivitiesController < OpenReadController
   end
 
   def activity_params
-    params.require(:activity).permit(:no, :street, :city, :state, :zip, :house_mgmt_co, :manager, :user_id)
+    params.require(:activity).permit(:name, :provider, :prono, :prostreet, :procity, :prostate, :zip, :dov, :tov, :length, :participant, :user_id)
   end
 
   private :set_activity, :activity_params
