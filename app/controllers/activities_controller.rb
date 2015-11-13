@@ -33,9 +33,12 @@ class ActivitiesController < OpenReadController
     end
   end
 
+  # DELETE /activities/1
   def destroy
-    Activity.delete
-    @activity.destroy
+    # @activity = Activity.find(params[:id]
+    activity = Activity.find(params[:id])
+    # Activity.delete
+    activity.destroy
 
     head :no_content
   end
